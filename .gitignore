@@ -1,0 +1,32 @@
+# secrets and local-only config
+.env
+.env.*
+!.env.example
+demo/wallets.local.json
+*-keypair.json
+*.keypair.json
+
+# dependencies and build output
+node_modules/
+.pnpm-store/
+dist/
+build/
+*.tsbuildinfo
+
+# local tooling, reference clones, scratch
+.tools/
+x402-langchain/
+.claude/
+claude.md
+.DS_Store
+
+# demo run artefacts (the final video and screenshots ARE committed)
+demo/logs/
+demo/out/raw/
+demo/out/tmp/
+demo/out/*DRYRUN*
+demo/out/failure.png
+demo/agent/test-data/agent-*
+
+# generated git-hook shims
+afara/.husky/_/

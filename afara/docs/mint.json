@@ -1,0 +1,66 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "toju",
+  "logo": {
+    "dark": "/logo/keep.svg",
+    "light": "/logo/keep.svg"
+  },
+  "favicon": "/logo/keep.svg",
+  "colors": {
+    "primary": "#F97316",
+    "light": "#FED7AA",
+    "dark": "#EA580C",
+    "anchors": {
+      "from": "#F97316",
+      "to": "#EA580C"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/tojunetwork/afara"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Launch App",
+    "url": "https://toju.network"
+  },
+  "tabs": [
+    {
+      "name": "SDK Reference",
+      "url": "sdk"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["introduction", "quickstart", "pricing"]
+    },
+    {
+      "group": "Contributing",
+      "pages": ["local-development"]
+    },
+    {
+      "group": "Core Concepts",
+      "pages": [
+        "concepts/storage-payments",
+        "concepts/cid-computation",
+        "concepts/renewal"
+      ]
+    },
+    {
+      "group": "SDK Reference",
+      "pages": [
+        "sdk/overview",
+        "sdk/deposit",
+        "sdk/sol-price",
+        "sdk/upload-history",
+        "sdk/renewal",
+        "sdk/x402"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/tojunetwork/afara"
+  }
+}

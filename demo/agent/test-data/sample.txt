@@ -1,0 +1,4 @@
+Hello from the toju local demo!
+This file is stored on IPFS by an autonomous AI agent that pays for its own storage.
+Payment: USDC on Base Sepolia via the x402 protocol.
+SDK: @toju.network/x402

@@ -1,0 +1,69 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1759762998007,
+      "tag": "0000_lethal_sasquatch",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763466447137,
+      "tag": "0001_breezy_mesmero",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1765467218512,
+      "tag": "0002_polite_proteus",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1733947200000,
+      "tag": "0003_rename_deposit_to_uploads",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1736121600000,
+      "tag": "0004_change_rate_to_real",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1737936000000,
+      "tag": "0005_add_usage_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1739145600000,
+      "tag": "0006_add_payment_chain_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1739232000000,
+      "tag": "0007_add_filecoin_wallet",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1742774400000,
+      "tag": "0008_backfill_payment_chain",
+      "breakpoints": true
+    }
+  ]
+}

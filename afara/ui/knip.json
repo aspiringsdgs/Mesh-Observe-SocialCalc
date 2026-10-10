@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["src/main.tsx", "src/routes/**/*.tsx"],
+  "project": ["src/**/*.{ts,tsx}"],
+  "ignore": ["src/routeTree.gen.ts"],
+  "vite": {
+    "config": "vite.config.ts"
+  },
+  "vitest": {
+    "config": "vite.config.ts"
+  }
+}

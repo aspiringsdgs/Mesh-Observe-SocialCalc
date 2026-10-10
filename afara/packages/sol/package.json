@@ -1,0 +1,52 @@
+{
+  "name": "@toju.network/sol",
+  "version": "1.0.0",
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.js.map"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --minify",
+    "dev": "pnpm build --watch",
+    "pack:local": "pnpm build && pnpm pack",
+    "knip": "knip"
+  },
+  "repository": {
+    "type": "git",
+    "directory": "packages/sol",
+    "url": "git+https://github.com/tojunetwork/afara.git"
+  },
+  "keywords": [
+    "solana",
+    "storacha",
+    "typescript",
+    "web3",
+    "ipfs",
+    "filecoin",
+    "decentralized-storage",
+    "blockchain"
+  ],
+  "author": "toju.network",
+  "license": "Apache-2.0",
+  "description": "Pay for storage with SOL on IPFS using Storacha's Hot storage network.",
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "@solana/kit": "^2.3.0",
+    "@solana/web3.js": "^1.98.4"
+  },
+  "devDependencies": {
+    "knip": "^5.88.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}

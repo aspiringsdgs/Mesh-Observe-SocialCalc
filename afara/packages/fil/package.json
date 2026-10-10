@@ -1,0 +1,53 @@
+{
+  "name": "@toju.network/fil",
+  "version": "1.0.0",
+  "description": "Pay for storage with USDFC on IPFS using Storacha's Hot storage network.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tojunetwork/afara",
+    "directory": "packages/fil"
+  },
+  "keywords": [
+    "usdfc",
+    "storacha",
+    "typescript",
+    "web3",
+    "ipfs",
+    "filecoin",
+    "decentralized-storage",
+    "blockchain"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --minify",
+    "dev": "pnpm build --watch",
+    "knip": "knip"
+  },
+  "author": "toju.network",
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "ethers": "^6.16.0"
+  },
+  "devDependencies": {
+    "knip": "^5.88.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "toju-demo",
+  "private": true,
+  "type": "module",
+  "description": "Local demo + Playwright recording harness for toju (tojunetwork/afara)",
+  "dependencies": {
+    "bs58": "^6.0.0",
+    "ffmpeg-static": "^5.2.0",
+    "playwright": "1.56.1",
+    "tweetnacl": "^1.0.3",
+    "viem": "~2.45.3"
+  },
+  "scripts": {
+    "setup": "./setup.sh",
+    "start": "./start.sh",
+    "stop": "./stop.sh",
+    "record": "node record.mjs"
+  }
+}
