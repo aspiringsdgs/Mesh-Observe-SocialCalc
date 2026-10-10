@@ -13,8 +13,8 @@ Tested on macOS (Apple Silicon). Testnets only.
 ## 2. Install
 
 ```bash
-git clone https://github.com/anisharma07/toju-sol.git
-cd toju-sol/demo
+git clone https://github.com/aspiringsdgs/Mesh-Observe-SocialCalc.git
+cd Mesh-Observe-SocialCalc/demo
 ./setup.sh
 ```
 

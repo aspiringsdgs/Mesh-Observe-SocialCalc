@@ -1,6 +1,10 @@
-# toju-sol
+# Mesh-Observe-SocialCalc
 
-A working local setup of [toju](https://github.com/tojunetwork/afara) (pay-as-you-go IPFS storage,
+Mesh observatory storage of logs, tracing and observability for SocialCalc.
+
+Live: https://mesh-works.xyz (Solana testnet)
+
+This repository currently contains the storage layer: a working setup of [toju](https://github.com/tojunetwork/afara) (pay-as-you-go IPFS storage,
 paid in crypto), plus a recorded demo of its two payment flows:
 
 1. **People pay with SOL** through the web app, on Solana testnet.
