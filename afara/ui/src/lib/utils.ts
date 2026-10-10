@@ -8,8 +8,10 @@ export const formatSOL = (amount: number): string => {
   return `${amount.toFixed(9).replace(/\.?0+$/, '')} SOL`
 }
 
-export const IS_DEV =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:5040' : undefined
+// VITE_API_URL wins when set, so a self-hosted build talks to its own API
+export const IS_DEV: string | undefined =
+  import.meta.env.VITE_API_URL ||
+  (process.env.NODE_ENV === 'development' ? 'http://localhost:5040' : undefined)
 
 /**
  * Format USD amount for display
