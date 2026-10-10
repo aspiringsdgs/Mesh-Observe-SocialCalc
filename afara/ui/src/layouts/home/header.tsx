@@ -100,7 +100,7 @@ export const HomeHeader = () => {
                 <Button
                   as="a"
                   background="none"
-                  href="https://github.com/aspiringsdgs/Mesh-Observe-SocialCalc"
+                  href="https://github.com/seetadev/IPFS-Solana-SDK"
                   target="_blank"
                   color="var(--text-muted)"
                   borderRadius="8px"
