@@ -100,7 +100,7 @@ export const HomeHeader = () => {
                 <Button
                   as="a"
                   background="none"
-                  href="https://github.com/tojunetwork/afara"
+                  href="https://github.com/aspiringsdgs/Mesh-Observe-SocialCalc"
                   target="_blank"
                   color="var(--text-muted)"
                   borderRadius="8px"
