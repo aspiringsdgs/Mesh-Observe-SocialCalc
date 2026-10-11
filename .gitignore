@@ -30,3 +30,8 @@ demo/agent/test-data/agent-*
 
 # generated git-hook shims
 afara/.husky/_/
+
+# SocialCalc agent run artefacts
+demo/socialcalc-agent/workbooks/
+demo/socialcalc-agent/runs.json
+demo/out/*INCOMPLETE*

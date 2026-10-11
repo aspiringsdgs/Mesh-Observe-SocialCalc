@@ -17,6 +17,7 @@ import { Route as LayoutAppIndexRouteImport } from './routes/_layout/app/index'
 import { Route as LayoutAppTransactionsRouteImport } from './routes/_layout/app/transactions'
 import { Route as LayoutAppMetricsRouteImport } from './routes/_layout/app/metrics'
 import { Route as LayoutAppHistoryRouteImport } from './routes/_layout/app/history'
+import { Route as LayoutAppAgentRouteImport } from './routes/_layout/app/agent'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -57,11 +58,17 @@ const LayoutAppHistoryRoute = LayoutAppHistoryRouteImport.update({
   path: '/app/history',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutAppAgentRoute = LayoutAppAgentRouteImport.update({
+  id: '/app/agent',
+  path: '/app/agent',
+  getParentRoute: () => LayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/renew': typeof RenewRoute
   '/terms': typeof TermsRoute
+  '/app/agent': typeof LayoutAppAgentRoute
   '/app/history': typeof LayoutAppHistoryRoute
   '/app/metrics': typeof LayoutAppMetricsRoute
   '/app/transactions': typeof LayoutAppTransactionsRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/renew': typeof RenewRoute
   '/terms': typeof TermsRoute
+  '/app/agent': typeof LayoutAppAgentRoute
   '/app/history': typeof LayoutAppHistoryRoute
   '/app/metrics': typeof LayoutAppMetricsRoute
   '/app/transactions': typeof LayoutAppTransactionsRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   '/_layout': typeof LayoutRouteWithChildren
   '/renew': typeof RenewRoute
   '/terms': typeof TermsRoute
+  '/_layout/app/agent': typeof LayoutAppAgentRoute
   '/_layout/app/history': typeof LayoutAppHistoryRoute
   '/_layout/app/metrics': typeof LayoutAppMetricsRoute
   '/_layout/app/transactions': typeof LayoutAppTransactionsRoute
@@ -93,6 +102,7 @@ export interface FileRouteTypes {
     | '/'
     | '/renew'
     | '/terms'
+    | '/app/agent'
     | '/app/history'
     | '/app/metrics'
     | '/app/transactions'
@@ -102,6 +112,7 @@ export interface FileRouteTypes {
     | '/'
     | '/renew'
     | '/terms'
+    | '/app/agent'
     | '/app/history'
     | '/app/metrics'
     | '/app/transactions'
@@ -112,6 +123,7 @@ export interface FileRouteTypes {
     | '/_layout'
     | '/renew'
     | '/terms'
+    | '/_layout/app/agent'
     | '/_layout/app/history'
     | '/_layout/app/metrics'
     | '/_layout/app/transactions'
@@ -183,10 +195,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAppHistoryRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/app/agent': {
+      id: '/_layout/app/agent'
+      path: '/app/agent'
+      fullPath: '/app/agent'
+      preLoaderRoute: typeof LayoutAppAgentRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
+  LayoutAppAgentRoute: typeof LayoutAppAgentRoute
   LayoutAppHistoryRoute: typeof LayoutAppHistoryRoute
   LayoutAppMetricsRoute: typeof LayoutAppMetricsRoute
   LayoutAppTransactionsRoute: typeof LayoutAppTransactionsRoute
@@ -194,6 +214,7 @@ interface LayoutRouteChildren {
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutAppAgentRoute: LayoutAppAgentRoute,
   LayoutAppHistoryRoute: LayoutAppHistoryRoute,
   LayoutAppMetricsRoute: LayoutAppMetricsRoute,
   LayoutAppTransactionsRoute: LayoutAppTransactionsRoute,

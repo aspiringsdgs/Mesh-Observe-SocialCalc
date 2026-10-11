@@ -38,6 +38,7 @@
     "react-dropzone": "^14.4.1",
     "react-markdown": "^10.1.0",
     "sass": "^1.98.0",
+    "socialcalc-ai": "1.0.10",
     "sonner": "^2.0.7",
     "swr": "^2.4.1",
     "viem": "~2.45.3",

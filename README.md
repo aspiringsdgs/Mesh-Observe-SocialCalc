@@ -9,6 +9,8 @@ paid in crypto), plus a recorded demo of its two payment flows:
 
 1. **People pay with SOL** through the web app, on Solana testnet.
 2. **AI agents pay with USDC** by themselves, over the [x402](https://x402.org) protocol, on Base Sepolia.
+3. **An agent builds a SocialCalc spreadsheet and pays to store it**: "create an invoice and keep it on
+   IPFS for 60 days" ([Part 3](#part-3-socialcalc--agentic-payments)).
 
 **Demo video (3 min 20 s):** [`demo/out/toju-demo.mp4`](demo/out/toju-demo.mp4)
 
@@ -67,6 +69,68 @@ The lines marked `→` and `←` are the HTTP exchange with the API:
 
 The stored file read back from an IPFS gateway by its CID.
 
+## Part 3: SocialCalc + agentic payments
+
+> "Create an invoice and store it on IPFS for 60 days."
+
+One sentence in, a spreadsheet on IPFS out. The agent builds the document as a
+[SocialCalc](https://github.com/aspiringsdgs/socialcalc-ai) workbook, then stores the file and pays
+for the storage itself. Nobody connects a wallet or approves anything.
+
+**Demo video (2 min 35 s):** [`demo/out/socialcalc-agent-demo.mp4`](demo/out/socialcalc-agent-demo.mp4)
+
+![The agent page](demo/screenshots/11-agent-page.png)
+
+How one request runs:
+
+1. **Plan.** An LLM (LangChain) reads the request and decides what the document needs.
+2. **Build.** It calls the [`socialcalc-mcp`](https://www.npmjs.com/package/socialcalc-mcp) server
+   over MCP: `new_workbook`, `write_range` (values and formulas such as `=B14*C14` and
+   `=SUM(D14:D15)`), then formatting calls (`set_format`, `set_cell_bg`, `set_border`, ...).
+3. **Store and pay.** It calls `store_workbook_ipfs`. The storage API answers
+   `402 Payment Required` with a price; `@toju.network/x402` signs a USDC authorization with the
+   agent's own key and retries; the payment settles on Base Sepolia and the API returns the CID.
+4. **Show.** The page fetches the stored file back from IPFS by its CID and renders it with the
+   [`socialcalc-ai`](https://www.npmjs.com/package/socialcalc-ai) engine, which also calculates the
+   formulas (the MCP server stores formulas but does not evaluate them).
+
+| | |
+|---|---|
+| ![Agent activity with the x402 exchange](demo/screenshots/12-agent-activity-x402.png) | ![Storage receipt](demo/screenshots/13-agent-receipt.png) |
+| Every MCP call, then the 402 → signed retry → 200 exchange | The receipt: CID, expiry, amount paid, balance before and after |
+
+![The stored invoice read back from IPFS](demo/screenshots/14-agent-socialcalc-document.png)
+
+The invoice above was read back from IPFS. Its amounts, subtotal, tax and total are live formulas.
+
+Where the code is:
+
+| Path | What it is |
+|---|---|
+| [`demo/socialcalc-agent/agent.mjs`](demo/socialcalc-agent/agent.mjs) | The agent: MCP client, tools, x402 storage, event stream |
+| [`demo/socialcalc-agent/server.mjs`](demo/socialcalc-agent/server.mjs) | HTTP service the page talks to (Server-Sent Events) |
+| [`demo/socialcalc-agent/cli.mjs`](demo/socialcalc-agent/cli.mjs) | The same agent from a terminal |
+| [`afara/ui/src/containers/app/agent.tsx`](afara/ui/src/containers/app/agent.tsx) | The "AI Agent" page |
+| [`afara/ui/src/lib/socialcalc.ts`](afara/ui/src/lib/socialcalc.ts) | Renders a workbook with the SocialCalc engine |
+| [`demo/record-socialcalc.mjs`](demo/record-socialcalc.mjs) | Records the demo video |
+
+Things worth knowing:
+
+- **The agent's wallet lives on the server.** Whoever can reach the agent service can make it spend
+  its test USDC, so the service limits runs per address and handles one request at a time. Each
+  document costs about 0.000001 USDC.
+- **The model sees 5 compact tools, not all 39.** Sending every MCP tool schema on every step
+  exhausted a free-tier LLM quota in two steps. `format_sheet` is a thin wrapper that fans out into
+  the real MCP formatting tools; each underlying MCP call is still shown on the page.
+- **The published `socialcalc-mcp` (1.0.6) is used as-is from npm.** The newer composite tools in
+  the `socialcalc-ai` repository (`create_full_workbook`, `insert_table`, ...) are not published yet.
+- **Only the engine of `socialcalc-ai` is loaded in the page**, through a Vite alias to its `core`
+  folder. Its main entry also loads the Ionic editor UI, which this read-only preview does not need.
+- **A free-tier LLM key can make a run pause.** When the provider rate-limits, the agent waits and
+  retries; the page shows "LLM rate limit reached".
+- **Layout is the model's work**, so two runs of the same request can look slightly different.
+  The numbers are formulas either way.
+
 ## What is and is not "real" in the recording
 
 - **Real:** the Solana testnet deposit transactions, the USDC settlements on Base Sepolia, the IPFS
@@ -117,6 +181,7 @@ demo/
   setup.sh         one-time setup          start.sh / stop.sh   run the stack
   record.mjs       Playwright recorder     lib/wallet.mjs       scripted testnet wallet
   agent/           LangChain agent + plain SDK example
+  socialcalc-agent/  agent that builds SocialCalc workbooks (MCP) and pays to store them (x402)
   db/  scripts/    schema fixups, env + wallet generator
   screenshots/  out/toju-demo.mp4
 SETUP.md           how to run all of this

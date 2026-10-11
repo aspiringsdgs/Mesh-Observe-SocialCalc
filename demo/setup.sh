@@ -27,6 +27,7 @@ step "Install dependencies"
 (cd demo && npm install)
 (cd afara && npx -y pnpm@10.11.0 --filter @toju.network/x402 build)   # agent SDK, used by demo/agent
 (cd demo/agent && npm install)
+(cd demo/socialcalc-agent && npm install)   # SocialCalc MCP + x402 agent
 
 step "Wallets and env files"
 (cd demo && node scripts/init-env.mjs)

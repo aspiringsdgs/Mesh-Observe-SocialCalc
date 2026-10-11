@@ -54,6 +54,23 @@ npx tsx langchain-agent.ts "Store ./test-data/sample.txt on IPFS for 30 days."
 
 Storing the same file twice returns `409` (already stored). Change the file to store again.
 
+### SocialCalc agent
+
+`./start.sh` also starts the agent service on `:5050`. Open http://localhost:3000/app/agent, type a
+request such as "Create an invoice for 10 hours of consulting at $120/hour and store it on IPFS for
+60 days", and press **Run agent**. It needs the same things as the agent above: test USDC in the
+agent wallet and an LLM key in `demo/agent/.env`.
+
+From a terminal:
+
+```bash
+cd socialcalc-agent
+node cli.mjs "Create an invoice for 10 hours of consulting at $120/hour and store it on IPFS for 60 days."
+```
+
+Workbooks the agent builds are kept in `demo/socialcalc-agent/workbooks/`. To record this demo:
+`node record-socialcalc.mjs` (writes `out/socialcalc-agent-demo.mp4`).
+
 ## 5. Record the demo video
 
 ```bash
@@ -85,6 +102,8 @@ The recording connects a scripted testnet wallet instead of a browser extension;
 | API exits with `Cannot find module ... sentry_cpu_profiler` | It was started with system Node 25+. Use `./start.sh`, which uses Node 22 |
 | Quotes fail with "Unable to get SOL price" | The API was started without `--import ./local-pyth.mjs`. Use `./start.sh` |
 | History page is empty after an upload | Hard-refresh; check `demo/logs/server.log` for a `GET /upload/history` line |
+| Agent page says the agent service is not reachable | `./start.sh` did not start it. Check `demo/logs/agent.log`; run `npm install` in `demo/socialcalc-agent` |
+| Agent run pauses with "LLM rate limit reached" | Free-tier LLM quota. It waits and retries by itself; a paid key removes the pause |
 | Port 3000 or 5040 already in use | `./stop.sh`, or stop whatever else holds the port |
 
 Logs: `demo/logs/server.log` and `demo/logs/ui.log`.

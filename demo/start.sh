@@ -1,5 +1,5 @@
 #!/bin/bash
-# Starts the whole local toju stack: Postgres + Neon proxy (Docker), API (:5040), UI (:3000).
+# Starts the whole local stack: Postgres + Neon proxy (Docker), API (:5040), UI (:3000), SocialCalc agent (:5050).
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NODE22="$ROOT/.tools/node22/bin/node"
@@ -11,13 +11,16 @@ echo "db      up (postgres :55432, neon http proxy :4444)"
 
 lsof -ti tcp:5040 | xargs kill 2>/dev/null || true
 lsof -ti tcp:3000 | xargs kill 2>/dev/null || true
+lsof -ti tcp:5050 | xargs kill 2>/dev/null || true
 sleep 1
 
 # The API needs Node <= 24 (@sentry/profiling-node has no Node 26 binary), hence the local Node 22.
 (cd "$ROOT/afara/server" && nohup "$NODE22" --import ./local-neon.mjs --import ./local-pyth.mjs dist/index.js > "$ROOT/demo/logs/server.log" 2>&1 &)
+[ -d "$ROOT/demo/socialcalc-agent/node_modules" ] && (cd "$ROOT/demo/socialcalc-agent" && nohup node server.mjs > "$ROOT/demo/logs/agent.log" 2>&1 &)
 (cd "$ROOT/afara/ui" && nohup npx vite --port 3000 --strictPort > "$ROOT/demo/logs/ui.log" 2>&1 &)
 
 for i in $(seq 1 30); do curl -s -o /dev/null localhost:5040/health && curl -s -o /dev/null localhost:3000 && break; sleep 1; done
 echo "api     $(curl -s localhost:5040/health)"
 echo "ui      http://localhost:3000"
+echo "agent   $(curl -s -m 3 localhost:5050/agent/info | cut -c1-70)"
 echo "logs    demo/logs/server.log, demo/logs/ui.log"

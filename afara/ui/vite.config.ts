@@ -19,6 +19,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // socialcalc-ai's root entry pulls in its Ionic/React editor UI; the read-only preview
+      // only needs the spreadsheet engine, which the package does not export on its own.
+      'socialcalc-core': fileURLToPath(
+        new URL('./node_modules/socialcalc-ai/core/index.js', import.meta.url),
+      ),
     },
   },
   define: {

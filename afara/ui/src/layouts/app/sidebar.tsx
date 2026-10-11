@@ -13,6 +13,7 @@ import {
   ArrowsLeftRightIcon,
   ChartLineIcon,
   ClockCounterClockwiseIcon,
+  RobotIcon,
   UploadSimpleIcon,
 } from '@phosphor-icons/react'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
@@ -24,6 +25,11 @@ const navItems = [
     name: 'Upload',
     path: '/app',
     icon: UploadSimpleIcon,
+  },
+  {
+    name: 'AI Agent',
+    path: '/app/agent',
+    icon: RobotIcon,
   },
   {
     name: 'History',
