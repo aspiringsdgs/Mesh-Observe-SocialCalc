@@ -145,7 +145,8 @@ NGINX
 sudo ln -sf /etc/nginx/sites-available/toju /etc/nginx/sites-enabled/toju && sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t 2>&1 | tail -1 && sudo systemctl reload nginx
 
-sleep 4
+# the API and the agent take a few seconds to start listening
+for _ in $(seq 1 30); do curl -s -o /dev/null -m 2 http://127.0.0.1:5040/health && { [ "$AGENT" = 0 ] || curl -s -o /dev/null -m 5 http://127.0.0.1:5050/agent/info; } && break; sleep 2; done
 echo; echo "api:  $(curl -s -m 10 http://127.0.0.1:5040/health)"
 echo "site: $(curl -s -m 10 -o /dev/null -w '%{http_code}' -H "Host: ${DOMAIN:-localhost}" http://127.0.0.1/)"
 [ "$AGENT" = 1 ] && echo "agent: $(curl -s -m 10 http://127.0.0.1/agent/info | cut -c1-90)"
