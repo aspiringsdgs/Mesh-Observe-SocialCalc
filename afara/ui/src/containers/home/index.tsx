@@ -20,6 +20,7 @@ import {
 import { Link } from '@tanstack/react-router'
 import { useConnection } from 'wagmi'
 import { FeatureShowcase } from './features'
+import { SocialCalcShowcase } from './socialcalc'
 import {
   Eyebrow,
   gradientButton,
@@ -261,6 +262,7 @@ export const HomePage = () => {
         </Box>
 
         <FeatureShowcase />
+        <SocialCalcShowcase />
 
         <Section id="how-it-works" eyebrow="How it works" borderBottom="none">
           <SimpleGrid mt="2rem" columns={{ base: 1, md: 5 }} gap="0.75rem">

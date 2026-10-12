@@ -22,6 +22,7 @@ import { useConnection, useDisconnect } from 'wagmi'
 
 const navLinks = [
   { label: 'Features', href: '/#features' },
+  { label: 'SocialCalc Agent', href: '/#socialcalc-agent' },
   { label: 'How it works', href: '/#how-it-works' },
   { label: 'Docs', href: 'https://docs.toju.network', external: true },
 ]
