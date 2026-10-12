@@ -16,6 +16,8 @@ import {
   CoinsIcon,
   HardDrivesIcon,
   RobotIcon,
+  TableIcon,
+  TreeStructureIcon,
 } from '@phosphor-icons/react'
 import { Link } from '@tanstack/react-router'
 import { useConnection } from 'wagmi'
@@ -69,10 +71,21 @@ export const HomePage = () => {
       as={Link}
       to="/app"
       disabled={!isAnyWalletConnected}
-      sx={gradientButton}
+      sx={outlineButton}
       rightIcon={<ArrowRightIcon weight="bold" />}
     >
       {isAnyWalletConnected ? 'Get started' : 'Connect wallet'}
+    </Button>
+  )
+
+  const agentCta = (
+    <Button
+      as={Link}
+      to="/app/agent"
+      sx={gradientButton}
+      rightIcon={<RobotIcon weight="bold" />}
+    >
+      Try the AI agent
     </Button>
   )
 
@@ -129,7 +142,7 @@ export const HomePage = () => {
                 letterSpacing="0.3em"
                 color="var(--mesh-cyan)"
               >
-                Mesh Observe · x402 testnet
+                Mesh Observe · SocialCalc
               </Text>
               <Heading
                 as="h1"
@@ -140,7 +153,7 @@ export const HomePage = () => {
                 lineHeight="1.1"
                 color="var(--text-inverse)"
               >
-                Verifiable storage for the Internet of Agents.
+                Spreadsheets your agents can build, store and pay for.
               </Heading>
               <Text
                 mt="1.5rem"
@@ -149,7 +162,7 @@ export const HomePage = () => {
                 lineHeight="var(--line-height-relaxed)"
                 color="var(--slate-300)"
               >
-                Store on IPFS. Pay per upload. No subscriptions, no middlemen.
+                One sentence in. A SocialCalc workbook on IPFS out.
               </Text>
               <Text
                 mt="1rem"
@@ -158,13 +171,14 @@ export const HomePage = () => {
                 lineHeight="var(--line-height-relaxed)"
                 color="var(--slate-400)"
               >
-                People pay from a wallet with SOL or USDFC. Agents pay with USDC
-                over x402, with no human in the loop.
+                The agent builds the document over MCP, stores it, and pays for
+                the storage itself in USDC over x402. People can still pay from
+                a wallet with SOL or USDFC.
               </Text>
 
               <Flex mt="2rem" wrap="wrap" align="center" gap="0.75rem">
+                {agentCta}
                 {primaryCta}
-                {repoCta}
                 <Box
                   as="code"
                   display={{ base: 'none', md: 'inline-flex' }}
@@ -178,35 +192,35 @@ export const HomePage = () => {
                   fontSize="var(--font-size-sm)"
                   color="var(--slate-400)"
                 >
-                  pnpm i @toju.network/sol
+                  npm i socialcalc-mcp
                 </Box>
               </Flex>
             </Box>
 
             <SimpleGrid columns={2} gap="0.75rem">
               <Tile
-                icon={HardDrivesIcon}
+                icon={TableIcon}
                 tone="cyan"
-                title="Upload"
-                text="Files hashed and pinned to IPFS"
+                title="SocialCalc"
+                text="A real workbook with live formulas"
+              />
+              <Tile
+                icon={TreeStructureIcon}
+                tone="violet"
+                title="MCP"
+                text="Built with socialcalc-mcp tools"
               />
               <Tile
                 icon={CoinsIcon}
                 tone="violet"
-                title="Pay"
-                text="SOL, USDFC, or USDC on Base"
+                title="x402"
+                text="Paid in USDC, no human approval"
               />
               <Tile
-                icon={ArrowsClockwiseIcon}
-                tone="violet"
-                title="Renew"
-                text="Metered, extendable retention"
-              />
-              <Tile
-                icon={RobotIcon}
+                icon={HardDrivesIcon}
                 tone="emerald"
-                title="Agents"
-                text="Autonomous payments over x402"
+                title="IPFS"
+                text="Stored and read back by CID"
               />
             </SimpleGrid>
           </Grid>
@@ -261,8 +275,8 @@ export const HomePage = () => {
           </Container>
         </Box>
 
-        <FeatureShowcase />
         <SocialCalcShowcase />
+        <FeatureShowcase />
 
         <Section id="how-it-works" eyebrow="How it works" borderBottom="none">
           <SimpleGrid mt="2rem" columns={{ base: 1, md: 5 }} gap="0.75rem">
@@ -316,11 +330,12 @@ export const HomePage = () => {
                 fontWeight="var(--font-weight-bold)"
                 color="var(--text-inverse)"
               >
-                Make storage something your agents can buy for themselves.
+                Give your agents a spreadsheet, a wallet and a place to keep
+                both.
               </Heading>
             </Box>
             <Flex wrap="wrap" gap="0.75rem" flexShrink={0}>
-              {primaryCta}
+              {agentCta}
               {repoCta}
             </Flex>
           </Flex>

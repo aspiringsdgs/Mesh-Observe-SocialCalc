@@ -31,7 +31,7 @@ const solSteps: Array<{ label: string; text: string; tone: Tone }> = [
 export const FeatureShowcase = () => (
   <Section
     id="features"
-    eyebrow="What's inside"
+    eyebrow="The storage layer underneath"
     tone="violet"
     title="Two ways to pay. One storage layer."
     lead="Every flow below runs against real testnets: real transactions, real IPFS pins, and a real LLM agent that settles its own bill."

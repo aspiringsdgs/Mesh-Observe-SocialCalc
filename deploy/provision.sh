@@ -1,12 +1,19 @@
 #!/bin/bash
 # Provisions an Ubuntu 24.04 host to serve toju-sol behind nginx. Run on the server, from the repo root:
 #   DOMAIN=toju-solana.duckdns.org ./deploy/provision.sh
+# Before a domain points at the host, serve it by IP instead:
+#   SITE_URL=http://203.0.113.10 ./deploy/provision.sh
 # Expects afara/server/.env to exist already (copy it over; it holds secrets and is not in git).
+# If demo/agent/.env exists too (agent wallet key + LLM key), the SocialCalc agent is served at /agent/.
 set -euo pipefail
-: "${DOMAIN:?set DOMAIN}"
+DOMAIN="${DOMAIN:-}"
+SITE_URL="${SITE_URL:-${DOMAIN:+https://$DOMAIN}}"
+: "${SITE_URL:?set DOMAIN or SITE_URL}"
+SERVER_NAME="${DOMAIN:-_}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; cd "$ROOT"
 step() { printf '\n== %s\n' "$1"; }
 [ -f afara/server/.env ] || { echo "afara/server/.env is missing"; exit 1; }
+AGENT=0; [ -f demo/agent/.env ] && [ -d demo/socialcalc-agent ] && AGENT=1
 
 step "swap (builds need more than 2 GB)"
 if ! sudo swapon --show | grep -q /swapfile; then
@@ -34,6 +41,10 @@ until sudo docker exec toju-pg pg_isready -U postgres -d toju >/dev/null 2>&1; d
 
 step "dependencies"
 (cd afara && npx -y pnpm@10.11.0 install --frozen-lockfile 2>&1 | tail -2)
+if [ "$AGENT" = 1 ]; then
+  (cd afara && npx -y pnpm@10.11.0 --filter @toju.network/x402 build 2>&1 | tail -1)
+  (cd demo/socialcalc-agent && npm install --no-audit --no-fund 2>&1 | tail -1)
+fi
 
 step "schema"
 if ! sudo docker exec toju-pg psql -U postgres -d toju -tAc "select to_regclass('public.config')" | grep -q config; then
@@ -47,10 +58,11 @@ sudo docker exec -i toju-pg psql -q -v ON_ERROR_STOP=1 -U postgres -d toju < dem
 step "build API and UI"
 (cd afara/server && npx tsc -b)
 cat > afara/ui/.env.production.local <<ENV
-VITE_API_URL=https://$DOMAIN/api
+VITE_API_URL=$SITE_URL/api
 VITE_SOLANA_NETWORK=testnet
 VITE_FILECOIN_NETWORK=calibration
 ENV
+[ "$AGENT" = 1 ] && echo "VITE_AGENT_URL=$SITE_URL" >> afara/ui/.env.production.local
 (cd afara/ui && NODE_OPTIONS=--max-old-space-size=3072 npx vite build 2>&1 | tail -3)
 sudo mkdir -p /var/www/toju && sudo rsync -a --delete afara/ui/dist/ /var/www/toju/
 
@@ -74,11 +86,46 @@ WantedBy=multi-user.target
 UNIT
 sudo systemctl daemon-reload && sudo systemctl enable -q toju-api && sudo systemctl restart toju-api
 
+AGENT_LOCATION=""
+if [ "$AGENT" = 1 ]; then
+  step "SocialCalc agent service"
+  sudo tee /etc/systemd/system/toju-agent.service >/dev/null <<UNIT
+[Unit]
+Description=SocialCalc agent
+After=network-online.target toju-api.service
+Wants=network-online.target
+
+[Service]
+User=$USER
+WorkingDirectory=$ROOT/demo/socialcalc-agent
+Environment=NODE_ENV=production
+Environment=TOJU_ENDPOINT=http://127.0.0.1:5040
+ExecStart=/usr/bin/node server.mjs
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+  sudo systemctl daemon-reload && sudo systemctl enable -q toju-agent && sudo systemctl restart toju-agent
+  # Runs are streamed as Server-Sent Events, so nginx must not buffer them.
+  AGENT_LOCATION='
+  location /agent/ {
+    proxy_pass http://127.0.0.1:5050;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_buffering off;
+    proxy_read_timeout 600s;
+  }'
+fi
+
 step "nginx"
 sudo tee /etc/nginx/sites-available/toju >/dev/null <<NGINX
 server {
   listen 80;
-  server_name $DOMAIN;
+  server_name $SERVER_NAME;
   root /var/www/toju;
   index index.html;
   client_max_body_size 100m;
@@ -91,6 +138,7 @@ server {
     proxy_read_timeout 300s;
     proxy_request_buffering off;
   }
+$AGENT_LOCATION
   location / { try_files \$uri \$uri/ /index.html; }
 }
 NGINX
@@ -99,5 +147,10 @@ sudo nginx -t 2>&1 | tail -1 && sudo systemctl reload nginx
 
 sleep 4
 echo; echo "api:  $(curl -s -m 10 http://127.0.0.1:5040/health)"
-echo "site: $(curl -s -m 10 -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" http://127.0.0.1/)"
-echo "Next, once DNS for $DOMAIN points here:  sudo certbot --nginx -d $DOMAIN --redirect --agree-tos --register-unsafely-without-email -n"
+echo "site: $(curl -s -m 10 -o /dev/null -w '%{http_code}' -H "Host: ${DOMAIN:-localhost}" http://127.0.0.1/)"
+[ "$AGENT" = 1 ] && echo "agent: $(curl -s -m 10 http://127.0.0.1/agent/info | cut -c1-90)"
+if [ -n "$DOMAIN" ]; then
+  echo "Next, once DNS for $DOMAIN points here:  sudo certbot --nginx -d $DOMAIN --redirect --agree-tos --register-unsafely-without-email -n"
+else
+  echo "Next, once a domain points here, re-run with DOMAIN=<domain> and then run certbot."
+fi
