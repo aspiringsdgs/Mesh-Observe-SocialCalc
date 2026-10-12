@@ -196,7 +196,7 @@ export const UploadHistory = () => {
                 <HStack spacing="1em" mb="1em">
                   <Box
                     p="0.75em"
-                    bg="rgba(249, 115, 22, 0.1)"
+                    bg="rgba(0, 190, 209, 0.1)"
                     borderRadius="var(--radius-md)"
                     color="var(--primary-500)"
                   >

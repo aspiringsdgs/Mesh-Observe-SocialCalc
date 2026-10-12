@@ -41,7 +41,7 @@ export const DropZone = ({
         isDragReject
           ? 'rgba(239, 68, 68, 0.05)'
           : isDragActive
-            ? 'rgba(249, 115, 22, 0.08)'
+            ? 'rgba(0, 190, 209, 0.08)'
             : 'var(--bg-dark)'
       }
       cursor="pointer"
@@ -54,7 +54,7 @@ export const DropZone = ({
         borderColor: isDragReject ? 'var(--error)' : 'var(--primary-500)',
         bg: isDragReject
           ? 'rgba(239, 68, 68, 0.08)'
-          : 'rgba(249, 115, 22, 0.05)',
+          : 'rgba(0, 190, 209, 0.05)',
         transform: 'scale(1.01)',
       }}
       _active={{
@@ -70,7 +70,7 @@ export const DropZone = ({
           left="0"
           right="0"
           bottom="0"
-          bgGradient="linear(to-br, transparent, rgba(249, 115, 22, 0.1))"
+          bgGradient="linear(to-br, transparent, rgba(0, 190, 209, 0.1))"
           pointerEvents="none"
           animation="pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
         />
@@ -84,7 +84,7 @@ export const DropZone = ({
             isDragReject
               ? 'rgba(239, 68, 68, 0.1)'
               : isDragActive
-                ? 'rgba(249, 115, 22, 0.15)'
+                ? 'rgba(0, 190, 209, 0.15)'
                 : 'rgba(255, 255, 255, 0.03)'
           }
           transition="all 0.3s ease"

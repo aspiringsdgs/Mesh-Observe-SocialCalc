@@ -1,6 +1,7 @@
 import { ChainSelector } from '@/components/chain-selector'
 import { ConnectFilWallet } from '@/components/connect-fil-wallet'
 import { ConnectWallet } from '@/components/connect-wallet'
+import { Logo } from '@/components/logo'
 import { useAuthContext, useChainContext } from '@/hooks/context'
 import {
   Box,
@@ -18,6 +19,12 @@ import {
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useConnection, useDisconnect } from 'wagmi'
+
+const navLinks = [
+  { label: 'Features', href: '/#features' },
+  { label: 'How it works', href: '/#how-it-works' },
+  { label: 'Docs', href: 'https://docs.toju.network', external: true },
+]
 
 export const HomeHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -48,53 +55,48 @@ export const HomeHeader = () => {
         top="0"
         left="0"
         right="0"
-        height="80px"
+        height="64px"
+        px={{ base: '1em', sm: '2em' }}
         zIndex="100"
-        background="rgba(6, 7, 14, 0.6)"
+        background="rgba(2, 6, 24, 0.8)"
         backdropFilter="blur(12px)"
-        borderBottom="1px solid rgba(255,255,255,0.05)"
+        borderBottom="1px solid var(--border-dark)"
         transition="all 0.3s ease"
       >
-        <Container maxW="container.xl" height="100%">
+        <Container maxW="6xl" px="0" height="100%">
           <HStack height="100%" justifyContent="space-between">
             <Link to="/">
-              <HStack spacing="0.5em" cursor="pointer">
-                <Box
-                  w="32px"
-                  h="32px"
-                  bgGradient="linear(to-br, var(--primary-500), var(--primary-700))"
-                  borderRadius="lg"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  boxShadow="0 0 15px rgba(249, 115, 22, 0.4)"
-                >
-                  <Box w="12px" h="12px" bg="white" borderRadius="full" />
-                </Box>
-                <Text
-                  fontSize="24px"
-                  fontWeight="var(--font-weight-bold)"
-                  color="var(--text-inverse)"
-                  letterSpacing="-0.03em"
-                >
-                  Keep
-                </Text>
-              </HStack>
+              <Logo compactOnMobile />
             </Link>
 
-            <HStack spacing="1.5em" alignItems="center">
-              <ChakraLink href="https://docs.toju.network" target="__blank">
-                <Text
-                  fontSize="var(--font-size-sm)"
-                  fontWeight="500"
-                  color="var(--text-muted)"
-                  _hover={{ color: 'var(--text-inverse)' }}
-                  transition="color 0.2s"
-                  display={{ lg: 'block', md: 'block', base: 'none' }}
-                >
-                  Documentation
-                </Text>
-              </ChakraLink>
+            <HStack spacing="1.75em" alignItems="center">
+              <HStack
+                as="nav"
+                spacing="1.75em"
+                display={{ lg: 'flex', base: 'none' }}
+              >
+                {navLinks.map((link) => (
+                  <ChakraLink
+                    key={link.label}
+                    href={link.href}
+                    isExternal={link.external}
+                    fontFamily="var(--font-family-mono)"
+                    fontSize="var(--font-size-xs)"
+                    fontWeight="var(--font-weight-bold)"
+                    textTransform="uppercase"
+                    letterSpacing="0.15em"
+                    whiteSpace="nowrap"
+                    color="var(--text-muted)"
+                    _hover={{
+                      color: 'var(--text-inverse)',
+                      textDecoration: 'none',
+                    }}
+                    transition="color 0.2s"
+                  >
+                    {link.label}
+                  </ChakraLink>
+                ))}
+              </HStack>
 
               <HStack spacing="0.8em">
                 <Button
@@ -122,8 +124,8 @@ export const HomeHeader = () => {
                     width="fit-content"
                     px="1em"
                     bg="rgba(255,255,255,0.05)"
-                    border="1px solid rgba(255,255,255,0.1)"
-                    borderRadius="full"
+                    border="1px solid var(--slate-700)"
+                    borderRadius="var(--radius-md)"
                     spacing="0.75em"
                   >
                     <WalletIcon
@@ -158,17 +160,12 @@ export const HomeHeader = () => {
                     px="1.5em"
                     fontSize="var(--font-size-sm)"
                     fontWeight="var(--font-weight-medium)"
-                    bg="rgba(255,255,255,0.05)"
-                    border="1px solid rgba(255,255,255,0.1)"
+                    bg="var(--mesh-gradient)"
                     color="var(--text-inverse)"
-                    backdropFilter="blur(5px)"
-                    borderRadius="full"
-                    transition="all 0.2s"
-                    _hover={{
-                      borderColor: 'var(--primary-500)',
-                      boxShadow: '0 0 15px rgba(249, 115, 22, 0.2)',
-                      bg: 'rgba(249, 115, 22, 0.1)',
-                    }}
+                    borderRadius="var(--radius-md)"
+                    transition="opacity 0.2s"
+                    _hover={{ bg: 'var(--mesh-gradient)', opacity: 0.9 }}
+                    _active={{ bg: 'var(--mesh-gradient)', opacity: 0.8 }}
                     leftIcon={<WalletIcon size={18} weight="fill" />}
                     onClick={() =>
                       selectedChain === 'sol'

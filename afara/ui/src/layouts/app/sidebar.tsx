@@ -17,6 +17,7 @@ import {
 } from '@phosphor-icons/react'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
+import { Logo } from '@/components/logo'
 import type { FileRouteTypes } from '@/routeTree.gen'
 
 const navItems = [
@@ -73,28 +74,7 @@ const SidebarContent = ({ onClose }: SidebarContentProps) => {
       py={{ lg: '2.4em', md: '2em', base: '2em' }}
     >
       <Box mb="3em">
-        <HStack spacing="0.5em">
-          <Box
-            w="32px"
-            h="32px"
-            bgGradient="linear(to-br, var(--primary-500), var(--primary-700))"
-            borderRadius="lg"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            boxShadow="0 0 15px rgba(249, 115, 22, 0.4)"
-          >
-            <Box w="12px" h="12px" bg="white" borderRadius="full" />
-          </Box>
-          <Text
-            fontSize="24px"
-            fontWeight="var(--font-weight-bold)"
-            color="var(--text-inverse)"
-            letterSpacing="-0.03em"
-          >
-            Keep
-          </Text>
-        </HStack>
+        <Logo />
       </Box>
 
       <VStack spacing=".2em" position="relative" align="stretch">

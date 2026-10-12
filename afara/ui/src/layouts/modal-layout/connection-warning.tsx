@@ -10,8 +10,10 @@ import { ModalLayout } from './modal'
 
 type ConnectionStatus = 'checking' | 'good' | 'slow' | 'offline' | 'unknown'
 
-interface ConnectionWarningProps
-  extends Pick<ModalLayoutProps, 'isOpen' | 'onClose'> {
+interface ConnectionWarningProps extends Pick<
+  ModalLayoutProps,
+  'isOpen' | 'onClose'
+> {
   onProceed: () => void
   connectionStatus: ConnectionStatus
   latency: number | null

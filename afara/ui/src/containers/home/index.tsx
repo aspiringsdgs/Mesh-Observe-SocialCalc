@@ -3,407 +3,326 @@ import {
   Box,
   Button,
   Container,
+  Flex,
+  Grid,
   Heading,
-  HStack,
   SimpleGrid,
-  Stack,
   Text,
-  VStack,
 } from '@chakra-ui/react'
 import {
   ArrowRightIcon,
   ArrowsClockwiseIcon,
+  ArrowUpRightIcon,
   CoinsIcon,
-  CubeIcon,
   HardDrivesIcon,
-  LightningIcon,
   RobotIcon,
 } from '@phosphor-icons/react'
-import { RocketLaunchIcon } from '@phosphor-icons/react/dist/ssr'
 import { Link } from '@tanstack/react-router'
 import { useConnection } from 'wagmi'
+import { FeatureShowcase } from './features'
+import {
+  Eyebrow,
+  gradientButton,
+  outlineButton,
+  Pill,
+  Section,
+  Tile,
+  tones,
+} from './ui'
 
-const styles = {
-  beam: {
-    position: 'absolute' as const,
-    top: '-100px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '600px',
-    height: '400px',
-    background:
-      'conic-gradient(from 180deg at 50% 50%, var(--primary-900) 0deg, var(--primary-500) 40deg, transparent 90deg, transparent 270deg, var(--primary-500) 320deg, var(--primary-900) 360deg)',
-    filter: 'blur(90px)',
-    opacity: 0.15,
-    zIndex: 0,
-    pointerEvents: 'none' as const,
+const REPO_URL = 'https://github.com/seetadev/IPFS-Solana-SDK'
+
+const pillars = [
+  {
+    icon: HardDrivesIcon,
+    title: 'Upload data',
+    text: 'Upload from the dashboard or the SDK. Files are hashed and pinned to IPFS.',
   },
-  gradientText: {
-    background: 'linear-gradient(135deg, #fff 0%, var(--primary-400) 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
+  {
+    icon: CoinsIcon,
+    title: 'Pay with crypto',
+    text: 'Settle storage fees with SOL, USDFC, or USDC on Base. Pay only for what you store.',
   },
-  card: {
-    border: '1px solid var(--border-dark)',
-    background: 'var(--bg-dark)',
-    padding: '1em',
-    borderRadius: 'var(--radius-lg)',
-    transition: 'all var(--transition-base)',
-    cursor: 'default',
-    _hover: {
-      cursor: 'pointer',
-      background: 'none',
-    },
+  {
+    icon: ArrowsClockwiseIcon,
+    title: 'Renew storage',
+    text: 'You decide how long files stay. Renew before they expire.',
   },
-}
+]
+
+const steps = [
+  'Connect a wallet or fund an agent',
+  'Pick a file and a storage duration',
+  'Get a live quote for bytes × days',
+  'Pay on-chain: SOL, USDFC, or USDC over x402',
+  'File pinned to IPFS, CID returned',
+]
 
 export const HomePage = () => {
   const { isAuthenticated } = useAuthContext()
   const { address: filAddress } = useConnection()
   const isAnyWalletConnected = isAuthenticated || !!filAddress
 
+  const primaryCta = (
+    <Button
+      as={Link}
+      to="/app"
+      disabled={!isAnyWalletConnected}
+      sx={gradientButton}
+      rightIcon={<ArrowRightIcon weight="bold" />}
+    >
+      {isAnyWalletConnected ? 'Get started' : 'Connect wallet'}
+    </Button>
+  )
+
+  const repoCta = (
+    <Button
+      as="a"
+      href={REPO_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      sx={outlineButton}
+      rightIcon={<ArrowUpRightIcon weight="bold" />}
+    >
+      GitHub
+    </Button>
+  )
+
   return (
-    <Box position="relative" overflow="hidden">
-      <Box sx={styles.beam} />
-
-      <Container
-        maxW="container.xl"
-        pt="6em"
-        pb="4em"
+    <Box>
+      <Box
+        as="header"
         position="relative"
-        zIndex="1"
+        overflow="hidden"
+        borderBottom="1px solid var(--border-dark)"
+        px={{ base: '1.5em', sm: '2em' }}
+        py={{ base: '4em', md: '6em' }}
       >
-        <VStack spacing="2em" textAlign="center">
-          <Box
-            display="inline-flex"
+        <Box
+          className="mesh-wash"
+          position="absolute"
+          inset="0"
+          opacity={0.7}
+          pointerEvents="none"
+        />
+        <Box
+          className="mesh-grid"
+          position="absolute"
+          inset="0"
+          opacity={0.2}
+          pointerEvents="none"
+        />
+
+        <Container maxW="6xl" px="0" position="relative">
+          <Grid
+            templateColumns={{ base: '1fr', lg: '1.1fr 0.9fr' }}
             alignItems="center"
-            px="1em"
-            py="0.4em"
-            borderRadius="full"
-            border="1px solid var(--primary-900)"
-            background="rgba(249, 115, 22, 0.1)"
+            gap="3em"
           >
-            <Box
-              w="6px"
-              h="6px"
-              borderRadius="full"
-              bg="var(--primary-500)"
-              mr="0.6em"
-              boxShadow="0 0 8px var(--primary-500)"
-            />
-            <Text
-              fontSize="var(--font-size-xs)"
-              color="var(--primary-200)"
-              fontWeight="var(--font-weight-medium)"
-            >
-              Live on Mainnet
-            </Text>
-          </Box>
+            <Box>
+              <Text
+                fontFamily="var(--font-family-mono)"
+                fontSize="10px"
+                fontWeight="var(--font-weight-bold)"
+                textTransform="uppercase"
+                letterSpacing="0.3em"
+                color="var(--mesh-cyan)"
+              >
+                Mesh Observe · x402 testnet
+              </Text>
+              <Heading
+                as="h1"
+                mt="1.25rem"
+                maxW="3xl"
+                fontSize={{ base: '36px', md: '60px' }}
+                fontWeight="800"
+                lineHeight="1.1"
+                color="var(--text-inverse)"
+              >
+                Verifiable storage for the Internet of Agents.
+              </Heading>
+              <Text
+                mt="1.5rem"
+                maxW="2xl"
+                fontSize="var(--font-size-xl)"
+                lineHeight="var(--line-height-relaxed)"
+                color="var(--slate-300)"
+              >
+                Store on IPFS. Pay per upload. No subscriptions, no middlemen.
+              </Text>
+              <Text
+                mt="1rem"
+                maxW="2xl"
+                fontSize="var(--font-size-sm)"
+                lineHeight="var(--line-height-relaxed)"
+                color="var(--slate-400)"
+              >
+                People pay from a wallet with SOL or USDFC. Agents pay with USDC
+                over x402, with no human in the loop.
+              </Text>
 
-          <Heading
-            as="h1"
-            fontSize={{ base: '42px', md: '64px', lg: '76px' }}
-            fontWeight="var(--font-weight-bold)"
-            lineHeight="1.05"
-            letterSpacing="-0.03em"
-            color="var(--text-inverse)"
-            textAlign="center"
-          >
-            Store without middlemen. <br />
-            <Box as="span" sx={styles.gradientText}>
-              Pay with crypto.
-            </Box>
-          </Heading>
-
-          <Text
-            fontSize="var(--font-size-lg)"
-            color="var(--text-muted)"
-            maxW="600px"
-            textAlign="center"
-            lineHeight="var(--line-height-relaxed)"
-            pt="-0.8em"
-          >
-            Pay per upload with SOL, USDFC, or USDC on Base. No credit cards, no
-            subscriptions. Pay only for what you store.
-          </Text>
-
-          <HStack
-            spacing={{ lg: '1em', md: '1em', base: '.6em' }}
-            pt="1.5em"
-            justify="center"
-            flexWrap="wrap"
-          >
-            <Button
-              as={Link}
-              to="/app"
-              disabled={!isAnyWalletConnected}
-              height="54px"
-              px="2.5em"
-              fontSize="var(--font-size-base)"
-              background="var(--primary-600)"
-              color="white"
-              fontWeight="600"
-              borderRadius="full"
-              width={{ base: '100%', lg: 'fit-content', md: 'fit-content' }}
-              boxShadow="0 0 20px rgba(249, 115, 22, 0.4)"
-              _hover={{
-                background: 'var(--primary-500)',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 0 30px rgba(249, 115, 22, 0.6)',
-              }}
-              transition="all 0.2s"
-              rightIcon={<ArrowRightIcon weight="bold" />}
-            >
-              {isAnyWalletConnected ? 'Get started' : 'Connect wallet'}
-            </Button>
-
-            <Box
-              as="code"
-              height="54px"
-              px="2.5em"
-              alignItems="center"
-              border="1px solid rgba(255,255,255,0.1)"
-              cursor="pointer"
-              background="rgba(255,255,255,0.05)"
-              borderRadius="full"
-              color="var(--text-muted)"
-              width={{ base: '100%', lg: 'fit-content', md: 'fit-content' }}
-              fontFamily="monospace"
-              fontSize="var(--font-size-base)"
-              display={{ lg: 'flex', md: 'flex', base: 'none' }}
-            >
-              pnpm i @toju.network/sol
-            </Box>
-          </HStack>
-        </VStack>
-      </Container>
-
-      <Box borderTop="1px solid var(--border-dark)" bg="var(--bg-dark)">
-        <Container maxW="container.lg" py="6em">
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap="1em">
-            <Box sx={styles.card}>
-              <Stack spacing="1.5em">
+              <Flex mt="2rem" wrap="wrap" align="center" gap="0.75rem">
+                {primaryCta}
+                {repoCta}
                 <Box
-                  w="48px"
-                  h="48px"
-                  display="flex"
+                  as="code"
+                  display={{ base: 'none', md: 'inline-flex' }}
                   alignItems="center"
-                  justifyContent="center"
+                  px="1.25em"
+                  py="0.8em"
                   borderRadius="var(--radius-md)"
-                  bg="var(--bg-darker)"
                   border="1px solid var(--border-dark)"
-                  color="var(--primary-500)"
+                  bg="rgba(15, 23, 43, 0.5)"
+                  fontFamily="var(--font-family-mono)"
+                  fontSize="var(--font-size-sm)"
+                  color="var(--slate-400)"
                 >
-                  <HardDrivesIcon size={24} weight="fill" />
+                  pnpm i @toju.network/sol
                 </Box>
-                <Stack spacing="0.5em">
-                  <Text
-                    fontSize="var(--font-size-lg)"
-                    fontWeight="var(--font-weight-semibold)"
-                    color="var(--text-inverse)"
-                  >
-                    Upload Data
-                  </Text>
-                  <Text
-                    color="var(--text-muted)"
-                    fontSize="var(--font-size-sm)"
-                  >
-                    Upload files via our Dashboard or SDK. Your data is
-                    encrypted, hashed, and prepared for decentralized warm
-                    storage.
-                  </Text>
-                </Stack>
-              </Stack>
+              </Flex>
             </Box>
 
-            <Box sx={styles.card}>
-              <Stack spacing="1.5em">
-                <Box
-                  w="48px"
-                  h="48px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="var(--radius-md)"
-                  bg="var(--bg-darker)"
-                  border="1px solid var(--border-dark)"
-                  color="var(--primary-500)"
-                >
-                  <CoinsIcon size={24} weight="fill" />
-                </Box>
-                <Stack spacing="0.5em">
-                  <Text
-                    fontSize="var(--font-size-lg)"
-                    fontWeight="var(--font-weight-semibold)"
-                    color="var(--text-inverse)"
-                  >
-                    Pay with Crypto
-                  </Text>
-                  <Text
-                    color="var(--text-muted)"
-                    fontSize="var(--font-size-sm)"
-                  >
-                    Settle your storage fees instantly with SOL or USDFC. No
-                    credit card required. Only pay for what you use.
-                  </Text>
-                </Stack>
-              </Stack>
-            </Box>
-
-            <Box sx={styles.card}>
-              <Stack spacing="1.5em">
-                <Box
-                  w="48px"
-                  h="48px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="var(--radius-md)"
-                  bg="var(--bg-darker)"
-                  border="1px solid var(--border-dark)"
-                  color="var(--primary-500)"
-                >
-                  <ArrowsClockwiseIcon size={24} weight="fill" />
-                </Box>
-                <Stack spacing="0.5em">
-                  <Text
-                    fontSize="var(--font-size-lg)"
-                    fontWeight="var(--font-weight-semibold)"
-                    color="var(--text-inverse)"
-                  >
-                    Renew Storage
-                  </Text>
-                  <Text
-                    color="var(--text-muted)"
-                    fontSize="var(--font-size-sm)"
-                  >
-                    You decide how long to store your files. We'll notify you
-                    via email when your storage is about to expire, so you can
-                    easily renew.
-                  </Text>
-                </Stack>
-              </Stack>
-            </Box>
-
-            <Box sx={styles.card}>
-              <Stack spacing="1.5em">
-                <Box
-                  w="48px"
-                  h="48px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="var(--radius-md)"
-                  bg="var(--bg-darker)"
-                  border="1px solid var(--border-dark)"
-                  color="var(--primary-500)"
-                >
-                  <RobotIcon size={24} weight="fill" />
-                </Box>
-                <Stack spacing="0.5em">
-                  <Text
-                    fontSize="var(--font-size-lg)"
-                    fontWeight="var(--font-weight-semibold)"
-                    color="var(--text-inverse)"
-                  >
-                    Agent Payments
-                  </Text>
-                  <Text
-                    color="var(--text-muted)"
-                    fontSize="var(--font-size-sm)"
-                  >
-                    Built for autonomous agents. Use{' '}
-                    <Box
-                      as="code"
-                      fontSize="var(--font-size-xs)"
-                      color="var(--primary-300)"
-                    >
-                      @toju.network/x402
-                    </Box>{' '}
-                    to store files and pay with USDC on Base — no human in the
-                    loop.
-                  </Text>
-                </Stack>
-              </Stack>
-            </Box>
-          </SimpleGrid>
+            <SimpleGrid columns={2} gap="0.75rem">
+              <Tile
+                icon={HardDrivesIcon}
+                tone="cyan"
+                title="Upload"
+                text="Files hashed and pinned to IPFS"
+              />
+              <Tile
+                icon={CoinsIcon}
+                tone="violet"
+                title="Pay"
+                text="SOL, USDFC, or USDC on Base"
+              />
+              <Tile
+                icon={ArrowsClockwiseIcon}
+                tone="violet"
+                title="Renew"
+                text="Metered, extendable retention"
+              />
+              <Tile
+                icon={RobotIcon}
+                tone="emerald"
+                title="Agents"
+                text="Autonomous payments over x402"
+              />
+            </SimpleGrid>
+          </Grid>
         </Container>
       </Box>
 
-      <Box borderTop="1px solid var(--border-dark)" py="8em">
-        <VStack spacing="2.5em">
-          <Text
-            color="var(--text-muted)"
-            fontSize="var(--font-size-sm)"
-            textTransform="uppercase"
-            letterSpacing="0.1em"
+      <Box as="main">
+        <Box
+          as="section"
+          borderBottom="1px solid var(--border-dark)"
+          px={{ base: '1.5em', sm: '2em' }}
+          py="3.5em"
+        >
+          <Container maxW="6xl" px="0">
+            <SimpleGrid
+              columns={{ base: 1, md: 3 }}
+              gap="1px"
+              overflow="hidden"
+              borderRadius="var(--radius-md)"
+              border="1px solid var(--border-dark)"
+              bg="var(--slate-800)"
+            >
+              {pillars.map(({ icon: PillarIcon, title, text }) => (
+                <Box
+                  as="article"
+                  key={title}
+                  p="1.5em"
+                  bg="var(--slate-950)"
+                  color="var(--mesh-cyan)"
+                >
+                  <PillarIcon size={22} />
+                  <Heading
+                    as="h2"
+                    mt="1rem"
+                    fontSize="var(--font-size-lg)"
+                    fontWeight="var(--font-weight-bold)"
+                    color="var(--text-inverse)"
+                  >
+                    {title}
+                  </Heading>
+                  <Text
+                    mt="0.5rem"
+                    fontSize="var(--font-size-sm)"
+                    lineHeight="var(--line-height-relaxed)"
+                    color="var(--slate-400)"
+                  >
+                    {text}
+                  </Text>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Container>
+        </Box>
+
+        <FeatureShowcase />
+
+        <Section id="how-it-works" eyebrow="How it works" borderBottom="none">
+          <SimpleGrid mt="2rem" columns={{ base: 1, md: 5 }} gap="0.75rem">
+            {steps.map((step, i) => (
+              <Box key={step} pt="1rem" borderTop="1px solid var(--slate-700)">
+                <Text
+                  fontFamily="var(--font-family-mono)"
+                  fontSize="var(--font-size-xs)"
+                  fontWeight="var(--font-weight-bold)"
+                  color={tones.violet.color}
+                >
+                  0{i + 1}
+                </Text>
+                <Text
+                  mt="0.75rem"
+                  fontSize="var(--font-size-sm)"
+                  fontWeight="var(--font-weight-semibold)"
+                  lineHeight="var(--line-height-relaxed)"
+                  color="var(--slate-200)"
+                >
+                  {step}
+                </Text>
+              </Box>
+            ))}
+          </SimpleGrid>
+
+          <Flex mt="2.5rem" wrap="wrap" gap="0.5rem">
+            <Pill>Usage-based storage</Pill>
+            <Pill>Pinata · IPFS</Pill>
+            <Pill>Solana</Pill>
+            <Pill>Filecoin</Pill>
+            <Pill>Base</Pill>
+          </Flex>
+
+          <Flex
+            mt="3.5rem"
+            pt="2.5rem"
+            borderTop="1px solid var(--border-dark)"
+            direction={{ base: 'column', md: 'row' }}
+            align={{ md: 'flex-end' }}
+            justify="space-between"
+            gap="1.5rem"
           >
-            Powered by modern infrastructure
-          </Text>
-          <HStack spacing="3em" opacity="0.6">
-            <HStack cursor="pointer">
-              <RocketLaunchIcon size={30} color="var(--text-inverse)" />
-              <Text
+            <Box>
+              <Eyebrow tone="violet">Ready when you are</Eyebrow>
+              <Heading
+                as="h2"
+                mt="0.75rem"
+                maxW="3xl"
+                fontSize={{ base: '24px', md: '30px' }}
+                fontWeight="var(--font-weight-bold)"
                 color="var(--text-inverse)"
-                fontSize={{
-                  xl: 'var(--font-size-xl)',
-                  lg: 'var(--font-size-lg)',
-                  md: 'var(--font-size-md)',
-                  base: 'var(--font-size-base)',
-                }}
-                fontWeight="bold"
               >
-                Pinata
-              </Text>
-            </HStack>
-            <HStack cursor="pointer">
-              <HardDrivesIcon size={30} color="var(--text-inverse)" />
-              <Text
-                fontSize={{
-                  xl: 'var(--font-size-xl)',
-                  lg: 'var(--font-size-lg)',
-                  md: 'var(--font-size-md)',
-                  base: 'var(--font-size-base)',
-                }}
-                color="var(--text-inverse)"
-                fontWeight="bold"
-              >
-                Filecoin
-              </Text>
-            </HStack>
-            <HStack cursor="pointer">
-              <LightningIcon size={30} color="var(--text-inverse)" />
-              <Text
-                fontSize={{
-                  xl: 'var(--font-size-xl)',
-                  lg: 'var(--font-size-lg)',
-                  md: 'var(--font-size-md)',
-                  base: 'var(--font-size-base)',
-                }}
-                color="var(--text-inverse)"
-                fontWeight="bold"
-              >
-                Solana
-              </Text>
-            </HStack>
-            <HStack cursor="pointer">
-              <CubeIcon size={30} color="var(--text-inverse)" />
-              <Text
-                fontSize={{
-                  xl: 'var(--font-size-xl)',
-                  lg: 'var(--font-size-lg)',
-                  md: 'var(--font-size-md)',
-                  base: 'var(--font-size-base)',
-                }}
-                color="var(--text-inverse)"
-                fontWeight="bold"
-              >
-                Base
-              </Text>
-            </HStack>
-          </HStack>
-        </VStack>
+                Make storage something your agents can buy for themselves.
+              </Heading>
+            </Box>
+            <Flex wrap="wrap" gap="0.75rem" flexShrink={0}>
+              {primaryCta}
+              {repoCta}
+            </Flex>
+          </Flex>
+        </Section>
       </Box>
     </Box>
   )

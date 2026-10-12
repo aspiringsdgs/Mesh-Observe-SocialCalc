@@ -1,190 +1,110 @@
-import {
-  Box,
-  Container,
-  Grid,
-  HStack,
-  Link,
-  Stack,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-import { DiscordLogoIcon, GithubLogoIcon } from '@phosphor-icons/react'
-import type { ReactElement, ReactNode } from 'react'
+import { Box, Container, Flex, HStack, Link, Text } from '@chakra-ui/react'
+
+const links = [
+  { label: 'Docs', href: 'https://docs.toju.network', external: true },
+  {
+    label: 'SDK Reference',
+    href: 'https://docs.toju.network/sdk/overview',
+    external: true,
+  },
+  {
+    label: 'Pricing',
+    href: 'https://docs.toju.network/pricing',
+    external: true,
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/seetadev/IPFS-Solana-SDK',
+    external: true,
+  },
+  { label: 'Discord', href: 'https://discord.gg/5YPxMnAf', external: true },
+  {
+    label: 'Meshworks',
+    href: 'https://mesh-works.net/products/observ',
+    external: true,
+  },
+  { label: 'Terms', href: '/terms' },
+]
+
+const monoLabel = {
+  fontFamily: 'var(--font-family-mono)',
+  fontSize: '11px',
+  fontWeight: 'var(--font-weight-bold)',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.1em',
+}
 
 export const HomeFooter = () => {
   return (
     <Box
       as="footer"
-      position="relative"
       borderTop="1px solid var(--border-dark)"
-      bg="var(--bg-darker)"
-      overflow="hidden"
+      px={{ base: '1.5em', sm: '2em' }}
+      py="3em"
     >
-      <Box
-        position="absolute"
-        bottom="-20%"
-        left="50%"
-        transform="translateX(-50%)"
-        width="80%"
-        height="300px"
-        bg="radial-gradient(circle, rgba(249,115,22,0.15) 0%, rgba(0,0,0,0) 70%)"
-        filter="blur(60px)"
-        pointerEvents="none"
-      />
-
-      <Container maxW="container.xl" py="6em" position="relative" zIndex="1">
-        <Grid templateColumns={{ base: '1fr', lg: '2fr 1fr 1fr' }} gap="4em">
-          <VStack align="flex-start" spacing="2em">
-            <VStack align="flex-start" spacing="0.5em">
-              <Text
-                fontSize="28px"
-                fontWeight="bold"
-                letterSpacing="-0.03em"
-                bgGradient="linear(to-r, #fff, var(--gray-500))"
-                bgClip="text"
-              >
-                toju.
-              </Text>
-              <Text color="var(--text-muted)" maxW="300px" lineHeight="1.6">
-                Upload to IPFS, pay with crypto. No credit cards, no middlemen.
-              </Text>
-            </VStack>
-
-            <Box
-              as="a"
-              p="1px"
-              bgGradient="linear(to-r, var(--gray-800), var(--primary-900), var(--gray-800))"
-              borderRadius="var(--radius-lg)"
-              href="https://plgd.xyz"
-              target="__blank"
-            >
-              <Box
-                bg="var(--bg-dark)"
-                borderRadius="var(--radius-lg)"
-                px="1em"
-                py="0.8em"
-              >
-                <Text
-                  fontSize="xs"
-                  color="var(--gray-400)"
-                  textTransform="uppercase"
-                  letterSpacing="0.05em"
-                  mb="2px"
-                >
-                  Borne out of
-                </Text>
-                <HStack>
-                  <Box
-                    w="8px"
-                    h="8px"
-                    bg="#0090FF"
-                    borderRadius="full"
-                    boxShadow="0 0 8px #0090FF"
-                  />
-                  <Text fontWeight="600" color="var(--text-inverse)">
-                    Protocol Labs
-                  </Text>
-                  <Text color="var(--gray-500)">Dev Guild</Text>
-                </HStack>
-              </Box>
-            </Box>
-          </VStack>
-
-          <VStack align="flex-start" spacing="1.5em">
-            <Text color="var(--text-inverse)" fontWeight="bold">
-              Resources
-            </Text>
-            <Stack spacing="0.8em">
-              <LinkItem href="https://docs.toju.network" isExternal>
-                Documentation
-              </LinkItem>
-              <LinkItem
-                href="https://docs.toju.network/sdk/overview"
-                isExternal
-              >
-                SDK Reference
-              </LinkItem>
-              <LinkItem href="https://docs.toju.network/pricing" isExternal>
-                Pricing
-              </LinkItem>
-            </Stack>
-          </VStack>
-
-          <VStack align="flex-start" spacing="1.5em">
-            <Text color="var(--text-inverse)" fontWeight="bold">
-              Community
-            </Text>
-            <Stack spacing="0.8em">
-              <LinkItem
-                href="https://github.com/seetadev/IPFS-Solana-SDK"
-                isExternal
-                icon={<GithubLogoIcon />}
-              >
-                GitHub
-              </LinkItem>
-              <LinkItem
-                href="https://discord.gg/5YPxMnAf"
-                isExternal
-                icon={<DiscordLogoIcon />}
-              >
-                Discord
-              </LinkItem>
-            </Stack>
-          </VStack>
-        </Grid>
-
-        <Box
-          mt="6em"
-          pt="2em"
-          borderTop="1px solid var(--border-dark)"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          flexWrap="wrap"
-          gap="1em"
+      <Container maxW="6xl" px="0">
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          align="center"
+          justify="space-between"
+          gap="2em"
         >
-          <Text fontSize="sm" color="var(--gray-600)">
-            &copy; {new Date().getFullYear()} toju.
+          <Text
+            sx={monoLabel}
+            color="var(--slate-500)"
+            textAlign={{ base: 'center', md: 'left' }}
+          >
+            &copy; {new Date().getFullYear()} Mesh Observe • Storage by Toju
+            Network
           </Text>
-          <HStack spacing="2em">
-            <Link
-              href="/terms"
-              fontSize="sm"
-              color="var(--gray-600)"
-              _hover={{ color: 'var(--text-muted)', textDecor: 'none' }}
+
+          <Flex
+            direction="column"
+            align={{ base: 'center', md: 'flex-end' }}
+            gap="1.5em"
+          >
+            <Flex wrap="wrap" justify="center" columnGap="2em" rowGap="1em">
+              {links.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  isExternal={link.external}
+                  sx={monoLabel}
+                  color="var(--slate-500)"
+                  transition="color 0.2s"
+                  _hover={{
+                    color: 'var(--text-inverse)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </Flex>
+
+            <HStack
+              spacing="0.5em"
+              px="0.75em"
+              py="0.4em"
+              borderRadius="full"
+              border="1px solid var(--slate-700)"
+              bg="var(--slate-900)"
             >
-              Terms
-            </Link>
-          </HStack>
-        </Box>
+              <Text fontSize="11px" color="var(--slate-400)">
+                Powered by
+              </Text>
+              <Text
+                fontSize="11px"
+                fontWeight="var(--font-weight-semibold)"
+                color="var(--slate-200)"
+              >
+                IPFS · Solana · Base · Filecoin
+              </Text>
+              <Box w="6px" h="6px" borderRadius="full" bg="var(--mesh-cyan)" />
+            </HStack>
+          </Flex>
+        </Flex>
       </Container>
     </Box>
   )
 }
-
-type LinkItemProps = {
-  href: string
-  children: ReactNode
-  icon?: ReactElement
-  isExternal?: boolean
-}
-
-const LinkItem = ({ href, children, icon, isExternal }: LinkItemProps) => (
-  <Link
-    href={href}
-    isExternal={isExternal}
-    color="var(--text-muted)"
-    display="flex"
-    alignItems="center"
-    gap="0.5em"
-    transition="0.2s"
-    _hover={{
-      color: 'var(--primary-400)',
-      transform: 'translateX(2px)',
-      textDecoration: 'none',
-    }}
-  >
-    {icon}
-    <Text fontSize="sm">{children}</Text>
-  </Link>
-)

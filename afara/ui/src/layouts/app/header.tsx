@@ -45,10 +45,10 @@ export const Header = ({ onMenuOpen }: HeaderProps) => {
         alignItems="center"
         position="fixed"
         width={{ xl: '85%', lg: '80%', md: '100%', base: '100%' }}
-        background="rgba(8, 8, 8, 0.6)"
+        background="rgba(2, 6, 24, 0.75)"
         backdropFilter="blur(12px)"
         zIndex="10"
-        borderBottom="1px solid rgba(255,255,255,0.05)"
+        borderBottom="1px solid var(--border-dark)"
       >
         <Box display={{ base: 'block', md: 'block', lg: 'none' }}>
           <IconButton
@@ -126,8 +126,8 @@ export const Header = ({ onMenuOpen }: HeaderProps) => {
                 cursor="pointer"
                 _hover={{
                   borderColor: 'var(--primary-500)',
-                  boxShadow: '0 0 15px rgba(249, 115, 22, 0.2)',
-                  bg: 'rgba(249, 115, 22, 0.1)',
+                  boxShadow: '0 0 15px rgba(0, 190, 209, 0.2)',
+                  bg: 'rgba(0, 190, 209, 0.1)',
                 }}
                 onClick={() => {
                   if (selectedChain === 'sol') {

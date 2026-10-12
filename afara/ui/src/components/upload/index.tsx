@@ -182,7 +182,7 @@ export const FileUpload = ({
                 fontSize="var(--font-size-sm)"
                 leftIcon={<FolderIcon size={16} weight="duotone" />}
                 _hover={{
-                  bg: 'rgba(249, 115, 22, 0.1)',
+                  bg: 'rgba(0, 190, 209, 0.1)',
                 }}
               >
                 Or select a folder

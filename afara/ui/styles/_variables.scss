@@ -1,54 +1,73 @@
 :root {
-  --primary-50: #fff7ed;
-  --primary-100: #ffedd5;
-  --primary-200: #fed7aa;
-  --primary-300: #fdba74;
-  --primary-400: #fb923c;
-  --primary-500: #f97316;
-  --primary-600: #ea580c;
-  --primary-700: #c2410c;
-  --primary-800: #9a3412;
-  --primary-900: #7c2d12;
-  --primary-950: #431407;
-  
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
-  --gray-950: #030712;
+  /* Meshworks palette: slate surfaces, libp2p cyan → violet accents */
+  --mesh-cyan: #00bed1;
+  --mesh-violet: #7e70ec;
+  --mesh-cyan-rgb: 0, 190, 209;
+  --mesh-violet-rgb: 126, 112, 236;
+  --mesh-gradient: linear-gradient(90deg, var(--mesh-cyan), var(--mesh-violet));
 
-  --dark-primary: #06070e;
-  --lght-grey: #100f0f;
-  --lght-grey-dark: #0e0e0e;
-  --heavy-grey: #1a1a1b;
-  --grey: #161315;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cad5e2;
+  --slate-400: #90a1b9;
+  --slate-500: #62748e;
+  --slate-600: #45556c;
+  --slate-700: #314158;
+  --slate-800: #1d293d;
+  --slate-900: #0f172b;
+  --slate-950: #020618;
+
+  --primary-50: #ecfdff;
+  --primary-100: #cff9fe;
+  --primary-200: #a5f1fb;
+  --primary-300: #67e3f5;
+  --primary-400: #22cfe4;
+  --primary-500: #00bed1;
+  --primary-600: #0096ab;
+  --primary-700: #06778a;
+  --primary-800: #0e6070;
+  --primary-900: #114f5e;
+  --primary-950: #053440;
+
+  --gray-50: var(--slate-50);
+  --gray-100: var(--slate-100);
+  --gray-200: var(--slate-200);
+  --gray-300: var(--slate-300);
+  --gray-400: var(--slate-400);
+  --gray-500: var(--slate-500);
+  --gray-600: var(--slate-600);
+  --gray-700: var(--slate-700);
+  --gray-800: var(--slate-800);
+  --gray-900: var(--slate-900);
+  --gray-950: var(--slate-950);
+
+  --dark-primary: #020618;
+  --lght-grey: #0f172b;
+  --lght-grey-dark: #0b1222;
+  --heavy-grey: #1d293d;
+  --grey: #0f172b;
   --blue: #4862b4;
-  --alt-grey: #141414;
-  --alt-white: #2a2929;
-  --grey1: #111111;
-  --slate: #26282a;
+  --alt-grey: #1d293d;
+  --alt-white: #314158;
+  --grey1: #0f172b;
+  --slate: #1d293d;
 
-  --vampire-black: #080808;
-  --dark-charcoal: #333333;
-  --eerie-black: #1b1b1b;
-  --dark-charcoal__variant-1: #2f2f2f;
+  --vampire-black: #020618;
+  --dark-charcoal: #314158;
+  --eerie-black: #0f172b;
+  --dark-charcoal__variant-1: #314158;
 
-  --vampire-black__variant-1: #070707;
-  --smoky-black__variant-1: #0d0d0d;
-  --chinese-black__variant-1: #111111;
-  --chinese-black__variant-2: #161616;
-  --eerie-black__variant-2: #191919;
+  --vampire-black__variant-1: #020618;
+  --smoky-black__variant-1: #070d1f;
+  --chinese-black__variant-1: #0b1222;
+  --chinese-black__variant-2: #0f172b;
+  --eerie-black__variant-2: #131c31;
 
-  --chinese-black: #141414;
+  --chinese-black: #0a1020;
 
-  --text-disabled: #949495;
-  --alt-text: rgba(243, 241, 241, 0.804);
+  --text-disabled: #90a1b9;
+  --alt-text: #cad5e2;
   --red-mead: #fb4b4e;
   --text-primary: #fff;
   --text-inverse: #fff;
@@ -69,7 +88,7 @@
   --border-light: var(--grey1);
   --border-medium: var(--slate);
   --border-dark: var(--alt-grey);
-  --border-hover: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(144, 161, 185, 0.16);
 
   --method: #d2a8ff;
   --identifier: #ff7b72;
@@ -102,14 +121,15 @@
 
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
   --radius-full: 9999px;
   
-  --inter: "Inter", sans-serif;
+  --inter: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --space-grotesk: "Space Grotesk", var(--inter);
   --fira-mono: "Fira Mono", monospace;
-  --jetbrains-mono: "JetBrains Mono", monospace;
+  --jetbrains-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --font-family-sans: var(--inter);
   --font-family-mono: var(--jetbrains-mono);

@@ -79,7 +79,7 @@ export const StorageDurationSelector = ({
                 cursor="pointer"
                 bg={
                   selectedDuration === duration
-                    ? 'rgba(249, 115, 22, 0.08)'
+                    ? 'rgba(0, 190, 209, 0.08)'
                     : 'var(--bg-dark)'
                 }
                 transition="all 0.2s ease"
@@ -90,7 +90,7 @@ export const StorageDurationSelector = ({
                       : 'var(--border-hover)',
                   bg:
                     selectedDuration === duration
-                      ? 'rgba(249, 115, 22, 0.12)'
+                      ? 'rgba(0, 190, 209, 0.12)'
                       : 'var(--lght-grey)',
                 }}
               >
