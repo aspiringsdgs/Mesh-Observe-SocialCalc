@@ -604,7 +604,7 @@ export const Upload = () => {
                 transform: isUploadDisabled ? 'none' : 'translateY(-1px)',
                 boxShadow: isUploadDisabled
                   ? undefined
-                  : '0 4px 12px rgba(24, 24, 23, 0.4), 0 0 20px rgba(249, 115, 22, 0.2)',
+                  : '0 4px 12px rgba(24, 24, 23, 0.4), 0 0 20px rgba(0, 190, 209, 0.2)',
               }}
               _active={{
                 transform: isUploadDisabled ? 'none' : 'translateY(0)',

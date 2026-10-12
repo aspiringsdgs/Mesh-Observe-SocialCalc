@@ -16,7 +16,7 @@ export const HomeLayout = ({ children }: HomeLayoutProps) => {
       background="var(--bg-darker)"
     >
       <HomeHeader />
-      <Box as="main" flex="1" marginTop="70px">
+      <Box as="main" flex="1" marginTop="64px">
         {children}
       </Box>
       <HomeFooter />

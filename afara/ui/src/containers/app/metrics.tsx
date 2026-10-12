@@ -44,7 +44,7 @@ export const Metrics = () => {
       label: 'Total Files',
       value: stats.totalFiles.toString(),
       color: 'var(--primary-500)',
-      bgColor: 'rgba(249, 115, 22, 0.1)',
+      bgColor: 'rgba(0, 190, 209, 0.1)',
     },
     {
       icon: HardDrivesIcon,
@@ -76,7 +76,7 @@ export const Metrics = () => {
       value: `${averageCost.toFixed(6)} SOL`,
       subValue: 'per file',
       color: 'var(--primary-500)',
-      bgColor: 'rgba(249, 115, 22, 0.1)',
+      bgColor: 'rgba(0, 190, 209, 0.1)',
     },
     {
       icon: WalletIcon,

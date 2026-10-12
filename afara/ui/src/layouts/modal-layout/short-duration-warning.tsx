@@ -2,8 +2,10 @@ import { Button, HStack, Stack, Text } from '@chakra-ui/react'
 import type { ModalLayoutProps } from './modal'
 import { ModalLayout } from './modal'
 
-interface ShortDurationWarningProps
-  extends Pick<ModalLayoutProps, 'isOpen' | 'onClose'> {
+interface ShortDurationWarningProps extends Pick<
+  ModalLayoutProps,
+  'isOpen' | 'onClose'
+> {
   onProceed: () => void
   duration: number
 }
