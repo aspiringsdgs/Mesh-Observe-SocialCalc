@@ -1,4 +1,5 @@
 // Records the SocialCalc + agentic payments demo:  node record-socialcalc.mjs [--headed]
+// Record with --headed: headless Chrome crops the bottom of the video, which hides the captions.
 // Drives the real web app at /app/agent. The agent run, the SocialCalc MCP tool calls, the x402
 // payment and the IPFS read-back all happen for real while recording.
 import { execFileSync } from 'node:child_process'
@@ -27,15 +28,15 @@ if (!info || !uiUp || !(Number(info.usdc) > 0)) {
 console.log(`agent wallet ${info.wallet}  ${info.usdc} USDC  model ${info.model}`)
 
 const CARD = (d) => `<!doctype html><meta charset="utf-8"><style>
-  html,body{margin:0;height:100%;color:#f5f5f4;font-family:-apple-system,BlinkMacSystemFont,Inter,"Segoe UI",sans-serif;
-    background:radial-gradient(900px 500px at 50% 30%,rgba(249,115,22,.16),transparent 70%),#0a0a0a}
+  html,body{margin:0;height:100%;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,Inter,"Segoe UI",sans-serif;
+    background:radial-gradient(55rem 30rem at 12% -10%,rgba(0,190,209,.16),transparent 70%),radial-gradient(45rem 26rem at 88% 0%,rgba(126,112,236,.14),transparent 70%),#020618}
   body{display:flex;align-items:center;justify-content:center}
   main{max-width:1040px;padding:0 60px;text-align:center}
-  .k{display:inline-block;border:1px solid rgba(249,115,22,.5);color:#fdba74;border-radius:999px;padding:6px 16px;font-size:15px;letter-spacing:.04em;margin-bottom:28px}
-  h1{font-size:60px;line-height:1.1;margin:0 0 24px;letter-spacing:-.03em;text-wrap:balance}
-  p{font-size:23px;line-height:1.5;color:#a8a29e;margin:0;text-wrap:pretty}
-  ul{list-style:none;padding:0;margin:34px 0 0;font-size:20px;color:#d6d3d1;line-height:1.9;text-align:left;display:inline-block}
-  li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#f97316;margin-right:14px;vertical-align:middle}
+  .k{display:inline-block;color:#00bed1;font:700 14px/1 "JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;text-transform:uppercase;letter-spacing:.3em;margin-bottom:30px}
+  h1{font-size:60px;line-height:1.1;margin:0 0 24px;letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+  p{font-size:23px;line-height:1.5;color:#90a1b9;margin:0;text-wrap:pretty}
+  ul{list-style:none;padding:0;margin:34px 0 0;font-size:20px;color:#cad5e2;line-height:1.9;text-align:left;display:inline-block}
+  li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#00bed1,#7e70ec);margin-right:14px;vertical-align:middle}
 </style><main>${d.kicker ? `<div class="k">${d.kicker}</div>` : ''}<h1>${d.title}</h1><p>${d.body || ''}</p><ul>${(d.points || []).map((x) => `<li>${x}</li>`).join('')}</ul></main>`
 
 async function caption(page, text) {
@@ -46,7 +47,7 @@ async function caption(page, text) {
       el.id = '__demo_caption'
       el.style.cssText =
         'position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147483647;max-width:1100px;' +
-        'background:rgba(12,10,9,.95);color:#fafaf9;border:1px solid rgba(249,115,22,.55);border-radius:12px;' +
+        'background:rgba(2,6,24,.95);color:#f1f5f9;border:1px solid rgba(0,190,209,.55);border-radius:6px;' +
         'padding:12px 22px;font:500 18px/1.4 -apple-system,BlinkMacSystemFont,Inter,sans-serif;text-align:center;' +
         'box-shadow:0 10px 40px rgba(0,0,0,.6);pointer-events:none'
       document.body.append(el)

@@ -80,7 +80,7 @@ One sentence in, a spreadsheet on IPFS out. The agent builds the document as a
 [SocialCalc](https://github.com/aspiringsdgs/socialcalc-ai) workbook, then stores the file and pays
 for the storage itself. Nobody connects a wallet or approves anything.
 
-**Demo video (2 min 35 s):** [`demo/out/socialcalc-agent-demo.mp4`](demo/out/socialcalc-agent-demo.mp4)
+**Demo video (1 min 53 s):** [`demo/out/socialcalc-agent-demo.mp4`](demo/out/socialcalc-agent-demo.mp4)
 
 ![The agent page](demo/screenshots/11-agent-page.png)
 
