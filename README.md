@@ -50,6 +50,9 @@ What happens when you click **Upload & Deposit**:
 A LangChain agent is given one tool, `store_file_ipfs`, built on `@toju.network/x402`. Asked in plain
 English to store a file, it calls the tool. No wallet popup, no human approval.
 
+**Demo video (2 min):** [`demo/out/agent-cli-demo.mp4`](demo/out/agent-cli-demo.mp4), recorded with
+`node record.mjs --scene agent --headed`.
+
 ![Agent stores a file and pays](demo/screenshots/07-agent-store.png)
 
 The lines marked `→` and `←` are the HTTP exchange with the API:
