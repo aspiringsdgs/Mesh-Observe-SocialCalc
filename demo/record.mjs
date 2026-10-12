@@ -1,9 +1,11 @@
 // Records the toju demo video with Playwright.
 //
 //   node record.mjs                 full demo (fails preflight if anything is missing)
-//   node record.mjs --scene agent   only the AI-agent (x402) part
+//   node record.mjs --scene agent   only the AI-agent (x402) part -> out/agent-cli-demo.mp4
 //   node record.mjs --scene web     only the Solana-testnet web app part
 //   node record.mjs --partial       record whatever works today, labelled as a dry run
+//
+// Record with --headed: headless Chrome crops the bottom of the video, which hides the captions.
 //
 // Everything on screen is real: the browser drives the locally running UI + API, and the
 // terminal scene streams the stdout of commands actually executed in demo/agent.
@@ -90,33 +92,32 @@ async function preflight() {
 
 // ---------------------------------------------------------------- stage pages (title card + terminal)
 const BASE_CSS = `
-  html,body{margin:0;height:100%;background:#0a0a0a;color:#f5f5f4;
+  html,body{margin:0;height:100%;background:#020618;color:#f1f5f9;
     font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif}`
 const CARD_HTML = `<!doctype html><meta charset="utf-8"><style>${BASE_CSS}
   body{display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(900px 500px at 50% 30%,rgba(249,115,22,.16),transparent 70%),#0a0a0a}
+    background:radial-gradient(55rem 30rem at 12% -10%,rgba(0,190,209,.16),transparent 70%),radial-gradient(45rem 26rem at 88% 0%,rgba(126,112,236,.14),transparent 70%),#020618}
   main{max-width:1000px;padding:0 60px;text-align:center}
-  .k{display:inline-block;border:1px solid rgba(249,115,22,.5);color:#fdba74;border-radius:999px;
-    padding:6px 16px;font-size:15px;letter-spacing:.04em;margin-bottom:28px}
-  h1{font-size:64px;line-height:1.08;margin:0 0 24px;letter-spacing:-.03em;text-wrap:balance}
-  p{font-size:23px;line-height:1.5;color:#a8a29e;margin:0;text-wrap:pretty}
-  ul{list-style:none;padding:0;margin:34px 0 0;font-size:20px;color:#d6d3d1;line-height:1.9;text-align:left;display:inline-block}
-  li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#f97316;margin-right:14px;vertical-align:middle}
+  .k{display:inline-block;color:#00bed1;font:700 14px/1 "JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;text-transform:uppercase;letter-spacing:.3em;margin-bottom:30px}
+  h1{font-size:64px;line-height:1.08;margin:0 0 24px;letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+  p{font-size:23px;line-height:1.5;color:#90a1b9;margin:0;text-wrap:pretty}
+  ul{list-style:none;padding:0;margin:34px 0 0;font-size:20px;color:#cad5e2;line-height:1.9;text-align:left;display:inline-block}
+  li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#00bed1,#7e70ec);margin-right:14px;vertical-align:middle}
 </style><main><div class="k" id="k"></div><h1 id="h"></h1><p id="p"></p><ul id="u"></ul></main>
 <script>const d=JSON.parse(decodeURIComponent(location.hash.slice(1)));
 k.textContent=d.kicker||'';if(!d.kicker)k.remove();h.textContent=d.title;p.textContent=d.body||'';
 for(const i of d.points||[]){const li=document.createElement('li');li.append(i);u.append(li)}</script>`
 const TERM_HTML = `<!doctype html><meta charset="utf-8"><style>${BASE_CSS}
   body{display:flex;flex-direction:column;padding:28px 36px 96px;box-sizing:border-box}
-  .bar{display:flex;align-items:center;gap:8px;background:#1c1917;border:1px solid #292524;border-bottom:0;
-    border-radius:12px 12px 0 0;padding:12px 16px;font-size:14px;color:#a8a29e}
-  .dot{width:12px;height:12px;border-radius:50%;background:#44403c}
+  .bar{display:flex;align-items:center;gap:8px;background:#0f172b;border:1px solid #1d293d;border-bottom:0;
+    border-radius:6px 6px 0 0;padding:12px 16px;font-size:14px;color:#90a1b9}
+  .dot{width:12px;height:12px;border-radius:50%;background:#314158}
   .bar span{margin-left:10px}
-  #t{flex:1;margin:0;overflow:hidden;background:#0c0a09;border:1px solid #292524;border-radius:0 0 12px 12px;
+  #t{flex:1;margin:0;overflow:hidden;background:#020618;border:1px solid #1d293d;border-radius:0 0 6px 6px;
     padding:20px 24px;font:17px/1.55 ui-monospace,"SF Mono",Menlo,monospace;white-space:pre-wrap;word-break:break-all;
     display:flex;flex-direction:column;justify-content:flex-end}
   #o{overflow:hidden}
-  .p{color:#f97316}.cur{display:inline-block;width:9px;height:19px;background:#f5f5f4;vertical-align:-3px;animation:b 1s steps(1) infinite}
+  .p{color:#00bed1}.cur{display:inline-block;width:9px;height:19px;background:#f1f5f9;vertical-align:-3px;animation:b 1s steps(1) infinite}
   @keyframes b{50%{opacity:0}}
 </style><div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span id="title">demo/agent — zsh</span></div>
 <pre id="t"><div id="o"></div></pre>
@@ -149,7 +150,7 @@ async function caption(page, text) {
       el.id = '__demo_caption'
       el.style.cssText =
         'position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:2147483647;max-width:1100px;' +
-        'background:rgba(12,10,9,.94);color:#fafaf9;border:1px solid rgba(249,115,22,.55);border-radius:12px;' +
+        'background:rgba(2,6,24,.95);color:#f1f5f9;border:1px solid rgba(0,190,209,.55);border-radius:6px;' +
         'padding:13px 22px;font:500 19px/1.4 -apple-system,BlinkMacSystemFont,Inter,sans-serif;text-align:center;' +
         'box-shadow:0 10px 40px rgba(0,0,0,.6);pointer-events:none;transition:opacity .25s'
       document.body.append(el)
@@ -168,7 +169,7 @@ async function card(page, data, ms = 4500) {
 }
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-const ANSI = { 1: 'font-weight:700', 2: 'color:#78716c', 31: 'color:#f87171', 32: 'color:#4ade80', 33: 'color:#fbbf24', 36: 'color:#67e8f9' }
+const ANSI = { 1: 'font-weight:700', 2: 'color:#62748e', 31: 'color:#f87171', 32: 'color:#4ade80', 33: 'color:#fbbf24', 36: 'color:#67e8f9' }
 function ansiToHtml(text) {
   let open = 0
   const html = esc(text).replace(/\x1b\[([\d;]*)m/g, (_, codes) => {
@@ -298,7 +299,7 @@ async function sceneAgent(page, s) {
   fs.writeFileSync(path.join(AGENT_DIR, memory), JSON.stringify({ kind: 'agent-memory', createdAt: new Date().toISOString(), facts: ['x402 lets an HTTP API ask for payment with status 402', 'toju prices storage per byte per day'] }, null, 2))
 
   await card(page, {
-    kicker: 'Part 2 · AI agents',
+    kicker: SCENE === 'agent' ? 'Agent CLI · x402' : 'Part 2 · AI agents',
     title: 'An agent that pays for its own storage',
     body: 'No wallet popup and no human in the loop. The agent calls the storage API, is quoted a price over HTTP 402, signs a USDC payment, and gets back a CID.',
     points: ['@toju.network/x402 — the agent SDK', 'x402 protocol — HTTP-native payments', 'USDC on Base Sepolia (testnet)', s.llm ? 'LangChain agent calling a store_file_ipfs tool' : 'SDK called directly (no LLM in this recording)'],
@@ -378,15 +379,15 @@ let failure = null
 try {
   await card(page, {
     kicker: ready ? 'Local demo · testnet' : 'DRY RUN · local demo · testnet',
-    title: 'toju — pay-as-you-go storage on IPFS',
+    title: 'Mesh Observe: pay-as-you-go storage on IPFS',
     body: 'Pay per upload with crypto. No credit card, no subscription. For people, and for AI agents.',
   }, 5500)
   if (want.web) await sceneWeb(page, s, sign)
   if (want.agent) await sceneAgent(page, s)
   await card(page, {
-    title: 'toju.network',
+    title: 'Mesh Observe',
     body: 'Storage that people and agents can pay for on their own.',
-    points: ['github.com/tojunetwork/afara', 'npm: @toju.network/sol · @toju.network/x402', 'docs.toju.network'],
+    points: ['github.com/aspiringsdgs/Mesh-Observe-SocialCalc', 'npm: @toju.network/sol · @toju.network/x402', 'storage by toju.network'],
   }, 6000)
 } catch (err) {
   failure = err
@@ -399,7 +400,8 @@ await context.close()
 await browser.close()
 stage.close()
 
-const name = `toju-demo${SCENE === 'all' ? '' : `-${SCENE}`}${ready && !failure ? '' : '-DRYRUN'}`
+const base = { all: 'toju-demo', agent: 'agent-cli-demo' }[SCENE] ?? `toju-demo-${SCENE}`
+const name = `${base}${ready && !failure ? '' : '-DRYRUN'}`
 const mp4 = path.join(OUT, `${name}.mp4`)
 execFileSync(ffmpegPath, ['-y', '-loglevel', 'error', '-i', await video.path(), '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', '30', '-movflags', '+faststart', mp4])
 console.log(`\n${failure ? 'INCOMPLETE recording' : 'recording'} saved: ${mp4}`)
